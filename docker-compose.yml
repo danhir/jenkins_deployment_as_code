@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+
+  jenkins:
+    image: jenkins
+    environment:
+      CONF_ALLOW_RUNS_ON_MASTER: 'true'
+    build:
+      context: .
+    ports:
+    - target: 8080
+      published: 8081
+    volumes:
+    - type: bind
+      source: '/var/run/docker.sock'
+      target: '/var/run/docker.sock'
+      read_only: true
+    - type: bind
+      source: '${PWD}/jjobs'       # Specify a permanent path on sever
+      target: '/var/jenkins_home/jobs'
+      read_only: false
+    #  - type: bind
+    #  source: '/c/repos//master.key' # Specify a restricted on sever
+    #  target: '/var/jenkins_home/secrets/master.key'
+    #  read_only: false
+    networks:
+    - jenkins-network
+    tty: true
+
+networks:
+  jenkins-network:
