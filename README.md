@@ -1,7 +1,8 @@
 # Fully automated deployment and configuration of Jenkins 
 
 Collection of Init scripts, configurations and executable Jenkinsfiles loaded automatically into a dockerized Jenkins.
-Useful for experimenting or demos.
+
+![](JDasC.png)
 
 ### Why
 
@@ -86,5 +87,6 @@ If you just want to test new plugins without committing them to git then stop at
         docker-compose build
         docker-compose up
           
-To completeley clean and rebuild everything run this command
+To completeley clean and rebuild everything run this command:
+
         docker-compose down && docker-compose build --no-cache && docker-compose up --force-recreate
