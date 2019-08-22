@@ -10,7 +10,7 @@ services:
       context: .
     ports:
     - target: 8080
-      published: 8081
+      published: 8080
     volumes:
     - type: bind
       source: '/var/run/docker.sock'
@@ -20,10 +20,10 @@ services:
       source: '${PWD}/jjobs'       # Specify a permanent path on sever
       target: '/var/jenkins_home/jobs'
       read_only: false
-    #  - type: bind
-    #  source: '/c/repos//master.key' # Specify a restricted on sever
+    #- type: bind
+    #  source: '/c/repos/master.key' # Specify a restricted folder on sever
     #  target: '/var/jenkins_home/secrets/master.key'
-    #  read_only: false
+    #  read_only: true
     networks:
     - jenkins-network
     tty: true

@@ -2,6 +2,12 @@ FROM docker.io/jenkins/jenkins:2.190
 
 LABEL Description="This container will setup Jenkins with Docker, install plugins, run Groovy Init Scripts and configure with Config-as-Code"
 
+USER root
+RUN apt-get update -y && \
+    apt-get install -y awscli jq gettext-base tree vim zip
+
+USER jenkins
+
 COPY plugins.txt /usr/share/jenkins/plugins.txt
 RUN /usr/local/bin/install-plugins.sh $(cat /usr/share/jenkins/plugins.txt | tr '\n' ' ')
 

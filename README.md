@@ -4,17 +4,17 @@ Collection of Init scripts, configurations and executable Jenkinsfiles loaded au
 
 ![](JDasC.png)
 
-### Why
+## Why
 
 Jenkins is easy to manually install and configure using the GUI but there are many drawbacks of setting upp servers in this way. 
 
-Testability:
+### Testability:
 There is no way to test how upgrading the Jenkins server or any plugin will affect other jobs. The oly way is to live deploy and hope that it will be possible to rollback if the tests fail. Rollback rarely works, most issues arrise from interplugin dependencies.
 
-Scalabilityt:
+### Scalabilityt:
 There is no way to setup an identical server on another site. The only way is to install it and compare the configuration pages. Checking the same boxes and copy/pasting the configuration options.
 
-Maintainability:
+### Maintainability:
 Easier to maintain when environment, configuration, plugins and jobs are stored in SCM.
 It is possible to mass manage Jenkins instances by generating them from the same codebase and only apply the different configurations that are project/server specific.
 
@@ -23,18 +23,20 @@ There is a need of working with job configurations that is versitile and univers
 In order to achieve this all code needs to be stored in SCM and all permanent changes need to be checked in and versioned.
 Changes not checked in will automaticaly be overwritten after each new commit in the repository.
 
-### How it works
+## How it works
 
 A Docker image is built according to the steps in Dockerfile.
 Docker compose will build and start the container with arguments located in docker-compose.yaml file.
+
 Steps are: 
-    -A docker image containing Jenkins is pulled from Docker hub.
-    -All plugins are downladed and installed to the jenkins instance.
-    -Jenkins2.sh will apply basic configuration and call jenkins.sh script to apply aditional configurations to Jenkins processes.
-    -Docker compose will map in resources needed for jenkins to boot.
-    -Jenkins Groovy init scripts will be executed and create initial jobs on the Jenkins server if they are not already created and mapped.
-    -Jenkins configuration as code will read jenkins.yaml configuration file and apply all configuration to both Jenkins and all the plugins.
-    -Jenkins process will finish its boot procedure and is ready to for use.
+
+* A docker image containing Jenkins is pulled from Docker hub.
+* All plugins are downladed and installed to the jenkins instance.
+* Jenkins2.sh will apply basic configuration and call jenkins.sh script to apply aditional configurations to Jenkins processes.
+* Docker compose will map in resources needed for jenkins to boot.
+* Jenkins Groovy init scripts will be executed and create initial jobs on the Jenkins server if they are not already created and mapped.
+* Jenkins configuration as code will read jenkins.yaml configuration file and apply all configuration to both Jenkins and all the plugins.
+* Jenkins process will finish its boot procedure and is ready to for use.
 
 
 ### Run
@@ -60,7 +62,7 @@ To remove all containers with all of its data run:
 
 ---
 
-### Updating Jenkins
+## Updating Jenkins
 
 If you wish to update jenkins for some reason then:
 
@@ -74,19 +76,23 @@ If you just want to test new plugins without committing them to git then stop at
 
 1. Start jenkins container.
 2. Manually install or update plugins through the UI.
-3. Restart jenkins to verify it's still working.
-4. Copy output of the following command to `plugins.txt` file (located in this repository):
+* Restart jenkins to verify it's still working.
+* Copy output of the following command to `plugins.txt` file (located in this repository):
 
         curl -s http://localhost:8080/pluginManager/api/json?depth=1 \
           | jq -r '.plugins[] | "\(.shortName):\(.version)"' \
           | sort
-    
-5. Rebuild docker image and start a new containers to verify new plugins have been installed:
+
+
+2. Alternatively: Write the name and version of the desired plugin to plugins.txt file and it will be downloaded and installed automatically. 
+
+3. Rebuild docker image and start a new containers to verify new plugins have been installed:
 
         docker-compose down
         docker-compose build
         docker-compose up
           
+### Clean reboot
 To completeley clean and rebuild everything run this command:
 
         docker-compose down && docker-compose build --no-cache && docker-compose up --force-recreate

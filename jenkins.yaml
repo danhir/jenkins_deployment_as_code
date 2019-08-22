@@ -7,18 +7,10 @@ credentials:
           password: "{AQAAABAAAAAQqMdSYiMtuL4Bncn1uMZT1PQNEEFrNkSMPL2BU9JI3QM=}"
           scope: GLOBAL
           username: "jenkins_admin"
-      - usernamePassword:
-          id: "github_user"
-          password: "{AQAAABAAAAAQ1qhYIEZFsCVOyegkYPhOWY47AP5Qo8Nb4Nu7kc7Mc3I=}"
-          scope: GLOBAL
-          username: "jenkinsadm"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
   - "Ping"
-  crumbIssuer:
-    standard:
-      excludeClientIPFromCrumb: true
   disableRememberMe: false
   markupFormatter: "plainText"
   mode: NORMAL
@@ -54,7 +46,7 @@ jenkins:
   projectNamingStrategy: "standard"
   quietPeriod: 0
   remotingSecurity:
-    enabled: true
+    enabled: false
   scmCheckoutRetryCount: 0
   slaveAgentPort: 50000
   updateCenter:
@@ -124,10 +116,6 @@ security:
     usageStatisticsEnabled: true
   downloadSettings:
     useBrowser: false
-  queueItemAuthenticator:
-    authenticators:
-    - global:
-        strategy: "triggeringUsersAuthorizationStrategy"
   sSHD:
     port: -1
 unclassified:
@@ -157,7 +145,7 @@ unclassified:
     useSsl: false
     watchingEnabled: false
   gitHubPluginConfig:
-    hookUrl: "http://localhost:8081/github-webhook/"
+    hookUrl: "http://localhost:8080/github-webhook/"
   gitSCM:
     createAccountBasedOnEmail: false
   globalSettings:
@@ -168,7 +156,7 @@ unclassified:
     extendedVersionMatching: false
   location:
     adminAddress: "address not configured yet <nobody@nowhere>"
-    url: "http://localhost:8081/"
+    url: "http://localhost:8080/"
   logstashConfiguration:
     enableGlobally: false
     enabled: false
